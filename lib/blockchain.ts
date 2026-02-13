@@ -86,9 +86,13 @@ export const submitScoreToContract = async (score: number): Promise<ethers.Trans
     if (error.code === 'INSUFFICIENT_FUNDS') {
       throw new Error('Insufficient ETH on Base network for gas fees.');
     }
-    // This code often indicates a contract revert.
-    if (error.code === 'CALL_EXCEPTION' || (error.receipt && error.receipt.status === 0)) {
-      throw new Error('Transaction failed: The contract reverted the transaction. Check contract conditions.');
+    // Handle contract reverts specifically to extract the reason
+    if (error.code === 'CALL_EXCEPTION') {
+      const reason = error.reason || 'The contract reverted the transaction.';
+      throw new Error(`Transaction failed: ${reason}`);
+    }
+    if (error.receipt && error.receipt.status === 0) {
+      throw new Error('Transaction failed: The transaction was mined but reverted.');
     }
     throw new Error('An unexpected error occurred while submitting the transaction.');
   }
