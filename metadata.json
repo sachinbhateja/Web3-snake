@@ -1,0 +1,5 @@
+{
+  "name": "Web3 Snake Game",
+  "description": "A modern, responsive Snake game with a sleek glassmorphism UI, dark/light modes, and Web3 integration. Players can connect their MetaMask wallet, play the classic game on desktop or mobile, and submit their high scores to a smart contract on the Base Mainnet.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web3 Snake Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            keyframes: {
+              'pulse-glow': {
+                '0%, 100%': { boxShadow: '0 0 10px #0ea5e9, 0 0 15px #0ea5e9' },
+                '50%': { boxShadow: '0 0 20px #0ea5e9, 0 0 30px #0ea5e9' },
+              },
+              'food-pulse': {
+                '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                '50%': { transform: 'scale(1.2)', opacity: '0.8' },
+              }
+            },
+            animation: {
+              'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+              'food-pulse': 'food-pulse 1.5s ease-in-out infinite',
+            }
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "ethers": "https://esm.sh/ethers@^6.16.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
+    <div id="root"></div>
+  </body>
+</html>
