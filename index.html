@@ -30,18 +30,23 @@
         },
       }
     </script>
+    <!-- The importmap is no longer needed with a build step -->
   <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "ethers": "https://esm.sh/ethers@^6.16.0"
+    "ethers": "https://esm.sh/ethers@^6.16.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4"
   }
 }
 </script>
 </head>
   <body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
     <div id="root"></div>
+    <!-- This is the new entry point for your app, handled by Vite -->
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

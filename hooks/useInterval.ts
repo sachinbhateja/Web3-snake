@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-// Fix: Simplified and corrected the type for the callback.
-// The previous generic type `T extends Function` was too broad and could lead to type errors.
-// Since the callback is always called without arguments, `() => void` is the correct and safe type.
+// Fix: Initialized useRef with the callback to ensure that `savedCallback.current` is always defined.
+// This prevents potential race conditions and makes the hook more robust by removing the initial `undefined` state of the ref.
 export function useInterval(callback: () => void, delay: number | null) {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef(callback);
 
   // Remember the latest callback.
   useEffect(() => {
@@ -14,9 +13,7 @@ export function useInterval(callback: () => void, delay: number | null) {
   // Set up the interval.
   useEffect(() => {
     function tick() {
-      if (savedCallback.current) {
-        savedCallback.current();
-      }
+      savedCallback.current();
     }
     if (delay !== null) {
       let id = setInterval(tick, delay);
