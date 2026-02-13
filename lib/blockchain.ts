@@ -57,6 +57,13 @@ export const checkAndSwitchNetwork = async (): Promise<boolean> => {
 
 // Submit score to the smart contract
 export const submitScoreToContract = async (score: number): Promise<ethers.TransactionResponse> => {
+  // Re-initialize provider and signer to ensure they are fresh and for the correct account
+  if (!window.ethereum) {
+    throw new Error('MetaMask is not installed. Please install it to submit your score.');
+  }
+  provider = new ethers.BrowserProvider(window.ethereum);
+  signer = await provider.getSigner();
+
   if (!signer) {
     throw new Error('Wallet not connected. Please connect your wallet first.');
   }
@@ -67,12 +74,22 @@ export const submitScoreToContract = async (score: number): Promise<ethers.Trans
   }
 
   const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-  
+
   try {
     const tx = await contract.submitScore(score);
     return tx;
-  } catch (error) {
-    console.error('Error submitting score to contract:', error);
-    throw error;
+  } catch (error: any) {
+    console.error("Blockchain transaction error:", error);
+    if (error.code === 'ACTION_REJECTED') {
+      throw new Error('Transaction rejected by user.');
+    }
+    if (error.code === 'INSUFFICIENT_FUNDS') {
+      throw new Error('Insufficient ETH on Base network for gas fees.');
+    }
+    // This code often indicates a contract revert.
+    if (error.code === 'CALL_EXCEPTION' || (error.receipt && error.receipt.status === 0)) {
+      throw new Error('Transaction failed: The contract reverted the transaction. Check contract conditions.');
+    }
+    throw new Error('An unexpected error occurred while submitting the transaction.');
   }
 };

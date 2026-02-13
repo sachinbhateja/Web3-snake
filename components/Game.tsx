@@ -39,6 +39,7 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
   const [txStatus, setTxStatus] = useState<TxStatus>('idle');
   const [txHash, setTxHash] = useState<string | null>(null);
+  const [txError, setTxError] = useState<string | null>(null);
   
   // Leaderboard logic
   useEffect(() => {
@@ -104,6 +105,7 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
     setScore(0);
     setTxStatus('idle');
     setTxHash(null);
+    setTxError(null);
   };
 
   const gameLoop = () => {
@@ -157,23 +159,21 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
   };
 
   const handleSubmitScore = async () => {
-    if (!connectedAddress) {
-      alert('Please connect your wallet first.');
-      return;
-    }
     if (score === 0) {
         alert('Score must be greater than 0 to submit.');
         return;
     }
     setTxStatus('pending');
+    setTxError(null);
     try {
       const tx = await submitScoreToContract(score);
       setTxHash(tx.hash);
       await tx.wait();
       setTxStatus('success');
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setTxStatus('error');
+      setTxError(error.message || 'An unknown error occurred.');
     }
   };
 
@@ -193,7 +193,7 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
     switch(txStatus) {
         case 'pending': return 'Submitting score to blockchain...';
         case 'success': return 'Score submitted successfully!';
-        case 'error': return 'Transaction failed. Please try again.';
+        case 'error': return txError;
         default: return null;
     }
   }
@@ -226,7 +226,18 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
                   </div>
                 ))}
               </div>
-              {(gameOver || speed === null) && (
+              
+              {!connectedAddress && (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center rounded-2xl gap-4 text-white text-center p-4">
+                  <h2 className="text-3xl font-bold">Welcome to Web3 Snake!</h2>
+                  <p>Connect your wallet on the Base network to start playing.</p>
+                  <button onClick={handleConnectWallet} className="px-6 py-3 rounded-lg bg-sky-500 text-white font-bold text-lg hover:bg-sky-600 transition-colors animate-pulse-glow">
+                    Connect Wallet
+                  </button>
+                </div>
+              )}
+
+              {connectedAddress && (gameOver || speed === null) && (
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center rounded-2xl gap-4 text-white">
                   {gameOver && <h2 className="text-5xl font-bold text-red-500 animate-pulse">Game Over</h2>}
                   <p className="text-2xl">Final Score: {score}</p>
@@ -234,10 +245,10 @@ const Game: React.FC<GameProps> = ({ theme, toggleTheme }) => {
                     {gameOver ? 'Play Again' : 'Start Game'}
                   </button>
                   {gameOver && (
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-2 mt-2">
                         <button 
                             onClick={handleSubmitScore} 
-                            disabled={!connectedAddress || txStatus === 'pending' || txStatus === 'success'}
+                            disabled={txStatus === 'pending' || txStatus === 'success'}
                             className="px-6 py-2 rounded-lg bg-green-600 text-white font-bold disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-green-700 transition-colors"
                         >
                             {txStatus === 'pending' ? 'Submitting...' : 'Submit Score to Chain'}
