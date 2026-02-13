@@ -1,3 +1,15 @@
+import { sdk } from "@farcaster/miniapp-sdk";
+import { useEffect } from "react";
+
+function App() {
+  useEffect(() => {
+    sdk.actions.ready();
+  }, []);
+
+  return (
+    // your existing JSX
+  );
+}
 
 import React, { useState, useEffect } from 'react';
 import Game from './components/Game';
