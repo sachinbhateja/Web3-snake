@@ -8,15 +8,21 @@
     "version": "1",
     "name": "Web3 Snake",
     "subtitle": "Onchain Snake Arcade",
-    "description": "Play Snake and save your score on Base.",
-    "iconUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "description": "Play Snake and save your score on Base. Compete on the leaderboard and prove your skills onchain.",
+    "tagline": "Play instantly on Base",
+    "primaryCategory": "games",
+    "tags": ["snake", "game", "arcade", "base", "web3"],
+
     "homeUrl": "https://web3-snake-chi.vercel.app/",
-    "imageUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "iconUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "heroImageUrl": "https://web3-snake-chi.vercel.app/icon.png",
     "splashImageUrl": "https://web3-snake-chi.vercel.app/icon.png",
     "splashBackgroundColor": "#0F111A",
-    "primaryCategory": "games",
-    "tags": ["snake", "game", "base", "arcade"],
-    "chains": ["base"],
-    "permissions": ["wallet"]
+
+    "ogTitle": "Web3 Snake on Base",
+    "ogDescription": "Play Snake and save your score on Base blockchain.",
+    "ogImageUrl": "https://web3-snake-chi.vercel.app/icon.png",
+
+    "noindex": false
   }
 }
