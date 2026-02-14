@@ -1,0 +1,22 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Web3 Snake",
+    "subtitle": "Onchain Snake Arcade",
+    "description": "Play Snake and save your score on Base.",
+    "iconUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "homeUrl": "https://web3-snake-chi.vercel.app/",
+    "imageUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "splashImageUrl": "https://web3-snake-chi.vercel.app/icon.png",
+    "splashBackgroundColor": "#0F111A",
+    "primaryCategory": "games",
+    "tags": ["snake", "game", "base", "arcade"],
+    "chains": ["base"],
+    "permissions": ["wallet"]
+  }
+}
